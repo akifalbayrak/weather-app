@@ -11,7 +11,7 @@ import wind_icon from "../Assets/wind.png";
 import humidity_icon from "../Assets/humidity.png";
 
 export const WeatherApp = () => {
-    let api_key = "a666568a2424acf37a0bd1ab6eabcaf5";
+    let api_key = "https://home.openweathermap.org/api_keys";
 
     const [wicon,setWicon] = useState(cloud_icon)
     const search = async () => {
@@ -29,7 +29,7 @@ export const WeatherApp = () => {
         const location = document.getElementsByClassName("weather-location");
         humidity[0].innerHTML = data.main.humidity + " %";
         wind[0].innerHTML = data.wind.speed  + " km/h";
-        temperature[0].innerHTML = (data.main.temp) + " F";
+        temperature[0].innerHTML = data.main.temp.toFixed(1) + " F";
         location[0].innerHTML = data.name;
 
         if(data.weather[0].icon === "01d" || data.weather[0].icon === "01n"){

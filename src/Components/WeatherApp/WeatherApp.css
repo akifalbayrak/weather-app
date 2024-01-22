@@ -1,9 +1,5 @@
 .container {
-    width: 607px;
-    height: 829px;
     margin: auto;
-    margin-top: 75px;
-    border-radius: 12px;
     background-image: linear-gradient(180deg,#130754,#3b2f80 100%);
 }
 .top-bar{
@@ -63,13 +59,15 @@
     color: white;
     display: flex;
     justify-content: center;
-
 }
 .element{
+    margin-top: 50px;
     margin:auto;
     display: flex;
     align-items: flex-start;
     gap: 12px;
+    margin-bottom: 50px;
+
 }
 
 .data {
