@@ -105,7 +105,18 @@ export const WeatherApp = () => {
     };
     return (
         <div className="container">
-            <ToastContainer position="top-right" />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className="top-bar">
                 <input
                     type="text"
