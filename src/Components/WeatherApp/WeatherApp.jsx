@@ -36,8 +36,7 @@ export const WeatherApp = () => {
     const [wind, setWind] = useState();
     const [temperature, setTemperature] = useState();
     const [location, setLocation] = useState();
-    const [searchInput, setSearchInput] = useState("London");
-    const [error, setError] = useState(false);
+    const [searchInput, setSearchInput] = useState("Kötekli");
 
     const debouncedSearchTerm = useDebounce(searchInput, 2000);
 
@@ -48,19 +47,14 @@ export const WeatherApp = () => {
     }, [debouncedSearchTerm]);
 
     const search = async () => {
-        console.log(searchInput);
         let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${api_key}`;
 
         let response = await fetch(url);
         if (!response.ok) {
-            setError(true);
             toast.error("City not found");
             return;
-        } else {
-            setError(false);
         }
         let data = await response.json();
-        console.log(data);
 
         setHumidity(data.main.humidity);
         setWind(data.wind.speed);
