@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./WeatherApp.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import search_icon from "../Assets/search.png";
 import clear_icon from "../Assets/clear.png";
@@ -9,6 +11,22 @@ import rain_icon from "../Assets/rain.png";
 import snow_icon from "../Assets/snow.png";
 import wind_icon from "../Assets/wind.png";
 import humidity_icon from "../Assets/humidity.png";
+
+function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
+}
 
 export const WeatherApp = () => {
     let api_key = "a666568a2424acf37a0bd1ab6eabcaf5";
@@ -21,6 +39,14 @@ export const WeatherApp = () => {
     const [searchInput, setSearchInput] = useState("London");
     const [error, setError] = useState(false);
 
+    const debouncedSearchTerm = useDebounce(searchInput, 2000);
+
+    useEffect(() => {
+        if (debouncedSearchTerm) {
+            search();
+        }
+    }, [debouncedSearchTerm]);
+
     const search = async () => {
         console.log(searchInput);
         let url = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${api_key}`;
@@ -28,6 +54,7 @@ export const WeatherApp = () => {
         let response = await fetch(url);
         if (!response.ok) {
             setError(true);
+            toast.error("City not found");
             return;
         } else {
             setError(false);
@@ -76,9 +103,9 @@ export const WeatherApp = () => {
             setWicon(clear_icon);
         }
     };
-    search();
     return (
         <div className="container">
+            <ToastContainer position="top-right" />
             <div className="top-bar">
                 <input
                     type="text"
@@ -92,7 +119,9 @@ export const WeatherApp = () => {
             <div className="weather-image">
                 <img src={wicon} />
             </div>
-            <div className="weather-temp">{temperature} F</div>
+            <div className="weather-temp">
+                {(temperature - 273.15).toFixed()} C
+            </div>
             <div className="weather-location">{location}</div>
             <div className="data-container">
                 <div className="element">
@@ -110,7 +139,6 @@ export const WeatherApp = () => {
                     </div>
                 </div>
             </div>
-            {error && <p>City not found</p>}
         </div>
     );
 };
